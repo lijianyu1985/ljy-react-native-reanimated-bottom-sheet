@@ -6,7 +6,6 @@ import {
   TapGestureHandler,
   State as GestureState,
 } from 'react-native-gesture-handler'
-import console = require('console');
 
 type Props = {
   /**
