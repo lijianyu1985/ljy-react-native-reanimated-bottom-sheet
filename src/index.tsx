@@ -342,52 +342,6 @@ export default class BottomSheetBehavior extends React.Component<Props, State> {
     const wasRun: Animated.Value<number> = new Value(0)
     this.translateMaster = block([
       cond(
-        eq(this.panMasterState, GestureState.CANCELLED),
-        set(this.panMasterState, GestureState.END),
-      ),
-      cond(
-        eq(this.panMasterState, GestureState.CANCELLED),
-        [
-          set(prevMasterDrag, 0),
-          cond(
-            or(clockRunning(masterClock), not(wasRun), this.isManuallySetValue),
-            [
-              cond(this.isManuallySetValue, stopClock(masterClock)),
-              set(
-                masterOffseted,
-                this.runSpring(
-                  masterClock,
-                  masterOffseted,
-                  this.masterVelocity,
-                  cond(
-                    this.isManuallySetValue,
-                    this.manuallySetValue,
-                    this.snapPoint
-                  ),
-                  wasRun,
-                  this.isManuallySetValue
-                )
-              ),
-              set(this.isManuallySetValue, 0),
-            ]
-          ),
-        ],
-        [
-          stopClock(masterClock),
-          set(this.preventDecaying, 1),
-          set(
-            masterOffseted,
-            add(masterOffseted, sub(this.dragMasterY, prevMasterDrag))
-          ),
-          set(prevMasterDrag, this.dragMasterY),
-          set(wasRun, 0), // not sure about this move for cond-began
-          cond(
-            eq(this.panMasterState, GestureState.BEGAN),
-            stopClock(this.masterClockForOverscroll)
-          ),
-        ]
-      ),
-      cond(
         eq(this.panMasterState, GestureState.END),
         [
           set(prevMasterDrag, 0),
@@ -635,8 +589,6 @@ export default class BottomSheetBehavior extends React.Component<Props, State> {
   }
 
   snapTo = (index: number) => {
-    console.log('snapTo');
-    console.log(index);
     if (!this.props.enabledImperativeSnapping) {
       return
     }
