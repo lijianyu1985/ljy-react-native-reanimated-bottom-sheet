@@ -341,6 +341,10 @@ export default class BottomSheetBehavior extends React.Component<Props, State> {
     const prevMasterDrag = new Value(0)
     const wasRun: Animated.Value<number> = new Value(0)
     this.translateMaster = block([
+     cond(
+        eq(this.panMasterState, GestureState.CANCELLED),
+        set(this.panMasterState, GestureState.END),
+      ),
       cond(
         eq(this.panMasterState, GestureState.END),
         [
